@@ -1,0 +1,15 @@
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: matter-macvlan-net # You will reference this name in your pod
+  namespace: home-assistant # Or wherever your Matter server will run
+spec:
+  config: '{
+      "cniVersion": "0.3.1",
+      "type": "macvlan",
+      "master": "eth0", # IMPORTANT: Change this to your host's physical interface
+      "mode": "bridge",
+      "ipam": {
+        "type": "dhcp"
+      }
+    }'

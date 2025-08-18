@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+metadata:
+    name: helm-repos
+    namespace: flux-system
+resources:
+  - bitnami.yaml
+  - bjw-s.yaml
+  - cloudnative-pg.yaml
+  - home-ops-mirror.yaml
+  - jetstack.yaml
+  - kustomization.yaml
+  - loki.yaml
+  - prometheus-community.yaml
+  - rancher.yaml
+  - spegel.yaml
+  - truecharts.yaml
+  - weave-gitops.yaml

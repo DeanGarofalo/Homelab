@@ -1,0 +1,153 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+    name: fort-dean
+    namespace: fort-dean
+spec:
+    interval: 15m
+    chart:
+        spec:
+            chart: minecraft-java
+            version: 23.13.12
+            sourceRef:
+                kind: HelmRepository
+                name: truecharts
+                namespace: flux-system
+    install:
+        createNamespace: true
+        crds: CreateReplace
+        remediation:
+            retries: 3
+    upgrade:
+        crds: CreateReplace
+        remediation:
+            retries: 3
+    values:
+        global:
+            stopAll: false
+        TZ: US/Eastern
+        mcbackup:
+            enabled: false
+        persistence:
+            backups:
+                enabled: true
+            data:
+                enabled: true
+                type: nfs
+                path: ${MINECRAFT_WORLD_PATH}
+                readOnly: false
+                server: ${TRUENAS_SERVER_IP}
+        securityContext:
+            container:
+                capabilities:
+                    add:
+                        - CAP_NET_RAW
+        resources:
+            limits:
+                memory: 4Gi
+            requests:
+                memory: 2Gi
+        service:
+            main:
+                enabled: true
+                type: LoadBalancer
+                loadBalancerIP: ${MINECRAFT_IP}
+                ports:
+                    main:
+                        enabled: true
+                        port: 25565
+                        protocol: tcp
+                    query:
+                        enabled: true
+                        port: 25565
+                        protocol: udp    
+            rcon:
+                enabled: true
+                type: ClusterIP
+                ports:
+                    rcon:
+                        enabled: true
+                        port: 25575
+            geyser:
+                enabled: false
+                type: LoadBalancer
+                loadBalancerIP: ${MINECRAFT_IP}
+                ports:
+                    geyser:
+                        enabled: true
+                        port: 19132
+                        protocol: udp
+        plugins:
+            # luckyperms
+            - 28140
+            # hibernate
+            - 4441 
+            # chest sort
+            - 59773
+            # vault
+            - 34315
+            # spark
+            - 57242
+            # discordsrv
+            - 18494
+            # actionbar
+            #- 2661 causing crashing on player join
+                
+        workload:
+            main:
+                podSpec:
+                    containers:
+                        main:
+                            imageSelector: j21Image
+                            env:
+                                ALLOW_NETHER: true
+                                ANNOUNCE_PLAYER_ACHIEVEMENTS: true
+                                DIFFICULTY: normal
+                                ENABLE_COMMAND_BLOCK: false
+                                ENABLE_QUERY: "true"
+                                EULA: "TRUE"
+                                FORCE_GAMEMODE: false
+                                FORCE_REDOWNLOAD: "false"
+                                GENERATE_STRUCTURES: true
+                                GENERATOR_SETTINGS: ""
+                                GUI: "FALSE"
+                                HARDCORE: false
+                                ICON: ""
+                                JVM_DD_OPTS: disable.watchdog:true
+                                JVM_OPTS: -Ddisable.watchdog=true
+                                JVM_XX_OPTS: ""
+                                LEVEL: Fort_Dean
+                                LEVEL_TYPE: DEFAULT
+                                MAX_BUILD_HEIGHT: 256
+                                MAX_PLAYERS: 20
+                                MAX_TICK_TIME: -1
+                                MAX_WORLD_SIZE: 10000
+                                MEMORY: 2G
+                                MODE: survival
+                                MODS: https://github.com/TCPShield/RealIP/releases/download/2.8.1/TCPShield-2.8.1.jar
+                                MOTD: Uhh Dean check the config...
+                                ONLINE_MODE: true
+                                OPS: ""
+                                OVERRIDE_SERVER_PROPERTIES: false
+                                PACKWIZ_URL: ""
+                                PAPER_DOWNLOAD_URL: ""
+                                PAPERBUILD: ""
+                                PVP: false
+                                RCON_PASSWORD: ""
+                                SEED: ""
+                                SPAWN_ANIMALS: true
+                                SPAWN_MONSTERS: true
+                                SPAWN_NPCS: true
+                                SPIGET_RESOURCES: '{{ join "," .Values.plugins }}'
+                                TYPE: PAPER
+                                USE_AIKAR_FLAGS: true
+                                USE_FLARE_FLAGS: false
+                                USE_SIMD_FLAGS: false
+                                VERSION: LATEST
+                                VIEW_DISTANCE: 16
+                                WHITELIST: ""
+                                WORLD: ""
+                                advanced: true
+                        mcbackup:
+                            enabled: flase
+                            

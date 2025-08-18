@@ -1,0 +1,55 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+    name: grafana
+    namespace: grafana
+spec:
+    interval: 15m
+    chart:
+        spec:
+            chart: grafana
+            version: 19.3.1
+            sourceRef:
+                kind: HelmRepository
+                name: truecharts
+                namespace: flux-system      
+    install:
+        createNamespace: true
+        remediation:
+            retries: 3
+    upgrade:
+        cleanupOnFail: true
+        remediation:
+            retries: 3
+    uninstall:
+        keepHistory: false
+    values:
+        global:
+            stopAll: false
+        TZ: US/Eastern
+        ingress:
+            main:
+                enabled: true
+                ingressClassName: internal
+                hosts:
+                    - host: grafana.${DOMAIN_0}
+                integrations:
+                    certManager:
+                        certificateIssuer: domain-0-le-prod
+                        enabled: true
+        cnpg:
+            main:
+                cluster:
+                    instances: 1
+                    singleNode: true
+        workload:
+            main:
+                podSpec:
+                    containers:
+                        main:
+                            env:
+                                GF_PANELS_DISABLE_SANITIZE_HTML: "true"
+
+        configmap:
+            dashboard-nginx:
+                enabled: true

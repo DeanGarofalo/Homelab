@@ -1,0 +1,99 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+    name: home-assistant
+    namespace: home-assistant
+spec:
+    interval: 15m
+    chart:
+        spec:
+            chart: home-assistant
+            version: 28.3.1
+            sourceRef:
+                kind: HelmRepository
+                name: truecharts
+                namespace: flux-system
+    install:
+        createNamespace: true
+        crds: CreateReplace
+        remediation:
+            retries: 3
+    upgrade:
+        crds: CreateReplace
+        remediation:
+            retries: 3
+    values:
+        global:
+            stopAll: false
+        credentials:
+            cloudflare:
+                type: s3
+                url: "${S3_URL}"
+                bucket: "${S3_BUCKET}"
+                accessKey: "${S3_ACCESKEY}"
+                secretKey: "${S3_SECRETKEY}"
+                encrKey: "${S3_ENCRKEY}"
+        TZ: US/Eastern
+        homeassistant:
+            trusted_proxies: []
+        cnpg:
+            main:
+                mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions
+                backups:
+                    credentials: cloudflare
+                    enabled: true
+                    retentionPolicy: "14d"
+                    revision: "3"
+                cluster:
+                    instances: 1
+                    singleNode: true
+                recovery:
+                    credentials: cloudflare
+                    revision: "2"
+        ingress:
+            main:
+                enabled: true
+                ingressClassName: internal
+                hosts:
+                    - host: homeassistant.${DOMAIN_0}
+                integrations:
+                    certManager:
+                        certificateIssuer: domain-0-le-prod
+                        enabled: true
+        persistence:
+            config:
+                volsync:
+                  - name: config
+                    type: restic
+                    credentials: cloudflare
+                    dest:               #VolSync Destination (Restore)
+                        enabled: true
+                    src:                #VolSync Source (Backup)
+                        enabled: true              
+        service:
+            main:
+                enabled: true
+                ports:
+                    main:
+                        port: 8123
+                        targetPort: 8123
+                type: ClusterIP
+        addons:
+            codeserver:
+                enabled: true
+                env:
+                    PASSWORD: ${CODESERVER_PASSWORD}
+                ingress:
+                    enabled: true
+                    ingressClassName: internal
+                    hosts:
+                        - host: homeassistant-config.${DOMAIN_0}
+                    integrations:
+                        certManager:
+                            certificateIssuer: domain-0-le-prod
+                            enabled: true
+                service:
+                    ports:
+                        codeserver:
+                            port: 36107
+                    type: ClusterIP

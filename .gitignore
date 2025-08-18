@@ -1,0 +1,10 @@
+age.agekey
+sopssecret.yaml
+sopssecret*
+*sopssecret*
+mounts/
+ssh-public-key.txt
+kubeconfig
+truenas_exports/
+.decrypted~*.yaml
+.DS_Store

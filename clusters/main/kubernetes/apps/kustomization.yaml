@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - minecraft/ks.yaml
+  - grafana/ks.yaml
+  - home-assistant/ks.yaml
+  - ha-matter/ks.yaml
+  - kubernetes-dashboard/ks.yaml
+  - librespeed/ks.yaml
+  - netdata/ks.yaml
+  - plex/ks.yaml
+  - rcon-webadmin/ks.yaml
+  - tautulli/ks.yaml
+  - truenas-redirect/ks.yaml
+  - uptime-kuma/ks.yaml
+  - webnut/ks.yaml

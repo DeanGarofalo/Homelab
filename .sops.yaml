@@ -1,0 +1,12 @@
+creation_rules:
+  - path_regex: ^clusters.*kubernetes.*values.ya?ml$
+    age: age16gcq5u0lsm7a65pgj9zsrjhd8u62myqdsanx4a4lz87l9tzd8yxqzhch73
+    encrypted_regex: "((?i)(displayname|email|pass|ca|id|bootstraptoken|secretboxencryptionsecret|secrets|secrets|password|cert|secret($|[^N])|key|token|^data$|^stringData))"
+  - path_regex: ^clusters.*kubernetes.*\.secret.ya?ml
+    age: age16gcq5u0lsm7a65pgj9zsrjhd8u62myqdsanx4a4lz87l9tzd8yxqzhch73
+    encrypted_regex: "((?i)(displayname|email|pass|ca|id|bootstraptoken|secretboxencryptionsecret|secrets|secrets|password|cert|secret($|[^N])|key|token|^data$|^stringData))"
+  - path_regex: clusterenv.yaml
+    age: age16gcq5u0lsm7a65pgj9zsrjhd8u62myqdsanx4a4lz87l9tzd8yxqzhch73
+  - path_regex: talsecret.yaml
+    age: age16gcq5u0lsm7a65pgj9zsrjhd8u62myqdsanx4a4lz87l9tzd8yxqzhch73
+
