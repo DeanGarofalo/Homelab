@@ -30,7 +30,7 @@ All resources in this cluster are deployed, updated, and managed by FluxCD, and 
 
 - Handles Helm releases, Kustomizations, and secrets via SOPS.
 
-- Configured with Discord push notifications and Webhook that initializes reconciliation of GitHub push events for instant manual updates.
+- Configured with Discord push notifications and a Webhook that initializes reconciliation of GitHub push events for instant manual updates.
 
 
 ### Networking
@@ -68,6 +68,29 @@ All resources in this cluster are deployed, updated, and managed by FluxCD, and 
 
 ---
 
+## 📁 Repository Structure
+```
+├── clusters
+│  └── main
+│     ├── clusterenv.yaml     # File of secret variables to be post build subsituted by Flux
+│     ├── kubernetes
+│     │  ├── apps             # HelmReleases for my applications
+│     │  ├── core             # Core cluster components Ex: Blocky, ClusterIssuer
+│     │  ├── flux-entry.yaml  # Entry point for Flux to bootstrap
+│     │  ├── flux-system      # Flux core components and addons
+│     │  ├── kube-system      # Extra Kube componments, CNI, CSR-approver, metrics server
+│     │  ├── kustomization.yaml # Surface level Kustomize file
+│     │  ├── monitoring       # Loki & Alloy folder
+│     │  ├── networking       # NGINX controllers + cloudflared and Multus-CNI
+│     │  └── system           # CSI, MetalLB, Volsync, Postgres operator
+│     └── talos               # Talos configuration
+├── kubeconfig
+├── README.md
+└── repositories
+```
+---
+
+
 ## 📝 Notes
 
 
@@ -80,3 +103,8 @@ CSI is **Longhorn**. Since this is a single node cluster, I didn't have any soli
 CNI is **Cilium**. It's so overkill and I don't have any good reason to use it. I figured I'd grow into it and use it as a learning exercise but I haven't had to touch it since it was first deployed.
 
 Since this is a *baremetal* Kubernetes cluster I use **MetalLB** as my load balancer. I define a range of IP's for MetalLB to use and MetalLB distributes those to Pod's requesting them, and advertises them across Layer 2 traffic. I only use load balancers for a few Pods since the majority of my deployments use Ingress.
+
+<br>
+<br>
+
+<small>Disclaimer: This is a fork of my actual homelab, the only difference is I have removed a couple of helm charts here that I didn't want to display (they revolve around multimedia), and on the off chance I accidentally expose a non encrypted secret. I do have a pre-commit script that runs sops on the folder structure, but I'd rather be safe than sorry.</small>
