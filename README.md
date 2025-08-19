@@ -84,7 +84,6 @@ All resources in this cluster are deployed, updated, and managed by FluxCD, and 
 │     │  ├── networking       # NGINX controllers + cloudflared and Multus-CNI
 │     │  └── system           # CSI, MetalLB, Volsync, Postgres operator
 │     └── talos               # Talos configuration
-├── kubeconfig
 ├── README.md
 └── repositories
 ```
