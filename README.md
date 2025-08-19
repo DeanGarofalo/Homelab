@@ -72,7 +72,7 @@ All resources in this cluster are deployed, updated, and managed by FluxCD, and 
 ```
 ├── clusters
 │  └── main
-│     ├── clusterenv.yaml     # File of secret variables to be post build subsituted by Flux
+│     ├── clusterenv.yaml        # File of secret variables to be post build subsituted by Flux
 │     ├── kubernetes
 │     │  ├── apps                # HelmReleases for my applications
 │     │  ├── core                # Core cluster components Ex: Blocky, ClusterIssuer
