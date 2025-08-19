@@ -74,16 +74,16 @@ All resources in this cluster are deployed, updated, and managed by FluxCD, and 
 │  └── main
 │     ├── clusterenv.yaml     # File of secret variables to be post build subsituted by Flux
 │     ├── kubernetes
-│     │  ├── apps             # HelmReleases for my applications
-│     │  ├── core             # Core cluster components Ex: Blocky, ClusterIssuer
-│     │  ├── flux-entry.yaml  # Entry point for Flux to bootstrap
-│     │  ├── flux-system      # Flux core components and addons
-│     │  ├── kube-system      # Extra Kube componments, CNI, CSR-approver, metrics server
-│     │  ├── kustomization.yaml # Surface level Kustomize file
-│     │  ├── monitoring       # Loki & Alloy folder
-│     │  ├── networking       # NGINX controllers + cloudflared and Multus-CNI
-│     │  └── system           # CSI, MetalLB, Volsync, Postgres operator
-│     └── talos               # Talos configuration
+│     │  ├── apps                # HelmReleases for my applications
+│     │  ├── core                # Core cluster components Ex: Blocky, ClusterIssuer
+│     │  ├── flux-entry.yaml     # Entry point for Flux to bootstrap
+│     │  ├── flux-system         # Flux core components and addons
+│     │  ├── kube-system         # Extra Kube componments, CNI, CSR-approver, metrics server
+│     │  ├── kustomization.yaml  # Surface level Kustomize file
+│     │  ├── monitoring          # Loki & Alloy folder
+│     │  ├── networking          # NGINX controllers + cloudflared and Multus-CNI
+│     │  └── system              # CSI, MetalLB, Volsync, Postgres operator
+│     └── talos                  # Talos configuration
 ├── README.md
 └── repositories
 ```
