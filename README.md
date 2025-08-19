@@ -106,4 +106,4 @@ Since this is a *baremetal* Kubernetes cluster I use **MetalLB** as my load bala
 <br>
 <br>
 
-<small>Disclaimer: This is a fork of my actual homelab, the only difference is I have removed a couple of helm charts here that I didn't want to display (they revolve around multimedia), and on the off chance I accidentally expose a non encrypted secret. I do have a pre-commit script that runs sops on the folder structure, but I'd rather be safe than sorry.</small>
+<sup><sub>Disclaimer: This is a fork of my actual homelab, the only difference is I have removed a couple of helm charts here that I didn't want to display (they revolve around multimedia), and on the off chance I accidentally expose a non encrypted secret. I do have a pre-commit script that runs sops on the folder structure, but I'd rather be safe than sorry.</sup></sub>
