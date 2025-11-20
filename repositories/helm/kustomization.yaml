@@ -11,6 +11,7 @@ resources:
   - jetstack.yaml
   - kustomization.yaml
   - loki.yaml
+  - metallb.yaml
   - prometheus-community.yaml
   - rancher.yaml
   - spegel.yaml
